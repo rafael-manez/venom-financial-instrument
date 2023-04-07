@@ -37,7 +37,7 @@ metadata/
         └── USA
 ```
 
-# Build on Isolated development Linux:
+# Run on Isolated development Linux:
 ```
     Usage: ./UbuntuVenomBootable.sh DOWNLOAD_RELEASE ISO_FILE USB_BLOCK_DEVICE_NAME
 
