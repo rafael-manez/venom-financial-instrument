@@ -60,8 +60,10 @@ metadata/
  - ISO UNICODE, Countries, numbers, known lists
  - ACRONIMS FROM SOURCE
  - Alphabetical orders A-Z for lists and 0-9 numbers
- - File Name: [a.zA-Z0-9_-] example:  sharesCompany.json shares_company-shares.json company_shares.json
+ - File Name: [a-zA-Z0-9_-] example:  sharesCompany.json shares_company-shares.json company_shares.json
  - Write: UpperCamelCase for type aliases and struct, trait, enum, and enum variant names, SCREAMING_SNAKE_CASE for constants or statics and snake_case for variable, function and struct member names. 
+ - JSON files as metadata container 
+ - Bash script files as scripting standard constructors: 000_script_name.sh ... 00N_script_name.sh
  
 # Human rights:
  Prevent the coldness of automatic execution of contracts on vulnerable population.
