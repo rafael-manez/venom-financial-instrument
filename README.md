@@ -10,7 +10,7 @@
   - Validation transaction 
   - Security on transacction
   - Block and Unblock assets
-  - Revocations
+  - Revocations and recoveries
   - Asset history
   - Transform financial rules into programmable financial rules
   - Scriptable Functions (Interactive and non-Interactive)  
