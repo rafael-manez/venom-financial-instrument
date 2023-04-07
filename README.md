@@ -16,12 +16,15 @@
   - Scriptable Functions (Interactive and non-Interactive)  
   
   
-# Metadata tree and regulatory rules:
+# Metadata tree, regulatory rules and builder:
  
 ``` 
+scripts/
+├── 001_companyShares_build.sh
 metadata/
 └── companyShares
     ├── contract
+    |   └── companyShares.tsol
     └── rules
         ├── CHINA
         ├── EU
@@ -68,4 +71,5 @@ metadata/
 # Human rights:
  Prevent the coldness of automatic execution of contracts on vulnerable population.
  
- 
+# Contribute
+ Contributions are always welcome!
