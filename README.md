@@ -7,6 +7,7 @@
   - Manage Instruments: company shares, bonds, derivates, contracts
   - Third party audit: National Competent Authorities (NCa's) and Central Financial Authorities as ADGM Authorities, ESMA, NFRA, SEC, ...
   - Permissions for third parties (Access, Views, SeenByThird, operations, privacy level and indentities by nomial name or alias)
+  - Jurisdictional limits
   - Validation transaction 
   - Security on transacction
   - Block and Unblock assets
