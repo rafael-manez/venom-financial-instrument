@@ -39,13 +39,14 @@
  |           `-- USA
  |               `-- SEC
  `-- scripts
-     `-- 000_config_venom_environment.sh
+     `-- 000_createUbuntuVenomBootable.sh
+     `-- 001_config_venom_environment.sh
  
 ```
 
 # Run on Isolated development Linux:
 ```
- Usage: ./UbuntuVenomBootable.sh DOWNLOAD_RELEASE ISO_FILE USB_BLOCK_DEVICE_NAME
+ Usage: ./000_createUbuntuVenomBootable.sh DOWNLOAD_RELEASE ISO_FILE USB_BLOCK_DEVICE_NAME
  
  Brief: Cold system Venom. Create a Isolated Bootable Persistent Live USB disk with Ubuntu Server, Venom requeriments and node in cold mode for clean development and deploy in hub mode
  
@@ -56,9 +57,9 @@
  ISO recomended: http://releases.ubuntu.com/20.04/ubuntu-20.04.6-live-server-amd64.iso
  ISO recomended: http://releases.ubuntu.com/22.10/ubuntu-22.10-live-server-amd64.iso
  
- Example: ./UbuntuVenomBootable.sh "ubuntu-20.04.6-live-server-amd64.iso" "/dev/sdc" "/media/cucumobile09/Ubuntu-Server 20.04.6 LTS amd64/
+ Example: ./000_createUbuntuVenomBootable.sh "ubuntu-20.04.6-live-server-amd64.iso" "/dev/sdc" "/media/${USER}/Ubuntu-Server 20.04.6 LTS amd64/
  
- 1.$ chmod a+x UbuntuVenomBootable.sh
+ 1.$ chmod a+x 000_createUbuntuVenomBootable.sh
  2.$ DOWNLOAD_RELEASE=http://releases.ubuntu.com/20.04/ubuntu-20.04.6-live-server-amd64.iso
  3.$ wget $DOWNLOAD_RELEASE
  4.$ ISO_FILE=ubuntu-20.04.6-live-server-amd64.iso
@@ -70,6 +71,15 @@
  10 Once Boot: Config Keyboard, network and default repository -ONLY CONFIG NOT INSTALL OR FORMAT-
  11 Jump shell console with tab from Help Menu and run venon-financial-instruments from bash scripts.
  12 end ;)
+
+```
+# Create Instruments
+```
+  1.# chmod a+x 000_config_venom_environment.sh'
+  2.# WORK_SPACE="/mnt/usb/venon/venom-financial-instruments' #work space should have the word venom-financial-instruments
+  3.# PROJECT_NAME_INSTRUMENT="companyShares"'
+  4.# ./000_config_venom_environment.sh "$WORK_SPACE" "$PROJECT_NAME_INSTRUMENT"'
+  5.# end ;)
 
 ```
 # Requeriments:
