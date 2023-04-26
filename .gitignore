@@ -1,2 +1,8 @@
-*.log
-
+*/node_modules
+node_modules
+yarn.lock
+*.swp
+get-docker.sh
+.env
+id_rsa
+id_rsa.pub

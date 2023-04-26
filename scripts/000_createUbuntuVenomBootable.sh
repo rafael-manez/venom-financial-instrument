@@ -11,13 +11,13 @@ echo ""
 
 function usage(){
   echo '' 
-  echo 'Usage: ./UbuntuVenomBootable.sh DOWNLOAD_RELEASE ISO_FILE USB_BLOCK_DEVICE_NAME'
+  echo 'Usage: ./000_createUbuntuVenomBootable.sh DOWNLOAD_RELEASE ISO_FILE USB_BLOCK_DEVICE_NAME'
   echo 'Brief: Cold system Venom. Create a Isolated Bootable Persistent Live USB disk with Ubuntu Server, Venom requeriments and node in cold mode for clean development and deploy in hub mode'
   echo 'Requerimets: >100 GB USB DISK FORMATED or EMPTY'
   echo 'Security level: High. Could be break your system. Each run removes all the latest content to update to the new system requirements. Please READ LINE BY LINE THIS SCRIPT'
   echo 'ISO recomended: http://releases.ubuntu.com/20.04/ubuntu-20.04.6-live-server-amd64.iso'
-  echo 'Example: ./UbuntuVenomBootable.sh "ubuntu-20.04.6-live-server-amd64.iso" "/dev/sdc" "/media/cucumobile09/Ubuntu-Server 20.04.6 LTS amd64/'
-  echo '1.$ chmod a+x UbuntuVenomBootable.sh'
+  echo 'Example: ./000_createUbuntuVenomBootable.sh "ubuntu-20.04.6-live-server-amd64.iso" "/dev/sdc" "/media/${USER}/Ubuntu-Server 20.04.6 LTS amd64/'
+  echo '1.$ chmod a+x 000_createUbuntuVenomBootable.sh'
   echo '2.$ DOWNLOAD_RELEASE=http://releases.ubuntu.com/20.04/ubuntu-20.04.6-live-server-amd64.iso'
   echo '3.$ wget $DOWNLOAD_RELEASE'
   echo '4.$ ISO_FILE=ubuntu-20.04.6-live-server-amd64.iso'
