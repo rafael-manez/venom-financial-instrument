@@ -83,6 +83,11 @@
    4.# ./001_config_venom_environment.sh "$WORK_SPACE" "$PROJECT_NAME_INSTRUMENT"
 
 ```
+# Test Instruments
+```
+  Usage: ./002_test_venom_instrument.sh "$WORK_SPACE" "PROJECT_NAME_INSTRUMENT" "$CONFIG_FILE_ENVIRONMENT"
+```
+
 # Requeriments:
  - USB DISK > $(SIZE_NODE) VENOM
 
