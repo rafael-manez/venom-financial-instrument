@@ -75,11 +75,12 @@
 ```
 # Create Instruments
 ```
-  1.# chmod a+x 000_config_venom_environment.sh'
-  2.# WORK_SPACE="/mnt/usb/venon/venom-financial-instruments' #work space should have the word venom-financial-instruments
-  3.# PROJECT_NAME_INSTRUMENT="companyShares"'
-  4.# ./000_config_venom_environment.sh "$WORK_SPACE" "$PROJECT_NAME_INSTRUMENT"'
-  5.# end ;)
+  Usage: ./001_config_venom_environment.sh "$WORK_SPACE" "PROJECT_NAME_INSTRUMENT"
+  Brief: install and config doker, node, yarn, npm, locklift and wokspace at default $WORK_SPACE/$PROJECT_NAME
+   1.# chmod a+x 001_config_venom_environment.sh
+   2.# WORK_SPACE="/mnt/usb/venon/venom-financial-instruments' #work space should have the word venom-financial-instruments
+   3.# PROJECT_NAME_INSTRUMENT="companyShares"
+   4.# ./001_config_venom_environment.sh "$WORK_SPACE" "$PROJECT_NAME_INSTRUMENT"
 
 ```
 # Requeriments:
