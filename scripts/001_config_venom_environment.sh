@@ -22,11 +22,16 @@ function usage()
 }
 
 echo "executing... ./001_config_venom_environment.sh \"$WORK_SPACE\" \"$PROJECT_NAME_INSTRUMENT\""
-#Create home and passs 
-sudo adduser venom
-sudo usermod -aG sudo venom #add to sudo group
+#Create home and passs or w
+if [[ $(whoami) == "venom" ]]; then 
+  echo "venom home exist";
+  cd --
+else 
+  echo "No Venom"; 
+  sudo adduser venom
+  sudo usermod -aG sudo venom #add to sudo group
+fi
 sync
-
 #Check script parameters
 if ! [[ "${WORK_SPACE}" =~ .*"${PROJECT_NAME}".* ]] ; then 
   echo "Error: I need a work space to build project $PROJECT_NAME with $PROJECT_NAME in path"
@@ -50,10 +55,12 @@ fi
 
 #Install require packages
 sudo apt update
+
 #sudo apt upgrade 
 sudo apt install gcc g++ make cmake tree
 sudo apt install cargo #solidity TMV linker
 sudo apt install ca-certificates curl gnupg
+
 #config Docker
 if ! [[ $(docker --version) =~ '23.'.* ]]; then 
  #sudo apt purge docker docker-engine docker.io containerd runc
@@ -90,11 +97,26 @@ if ! [[ $( solc -v) =~ .*'0.68.'.* ]]; then
   sudo -u venom sh ${VENOM_HOME}/TON-Solidity-Compiler/compiler/scripts/install_lib_variable.sh #Envar venom Environment
 fi
 
+#Dowload tonlabs local docker environemnt
+tonlabs_local_node=$(sudo docker ps | grep tonlabs/local-node)
+if [[ -n $tonlabs_local_node ]]; then 
+  echo "Tonlabs docker local-node"
+  sudo docker ps | grep tonlabs/local-node
+else	
+  sudo docker run -d -e USER_AGREEMENT=yes --rm --name local-node -p80:80 tonlabs/local-node:0.20.1
+  echo $tonlabs_local_node 
+fi
+version_tonlabas_local_node=$(sudo docker ps | grep -Eo "tonlabs/local-node:[.0-9]+")
+
+#Check npm locklift package
+if ! [[ $( npm list -g | grep locklift ) =~ .*'2.5.5'.* ]]; then 
+  sudo npm install -g locklift
+fi
+
 #Setting up the venom smart contract development environment
-sudo npm install -g locklift
 if ! [ -d  "$workSpace/${PROJECT_NAME_INSTRUMENT}" ]; then 
   echo "Initial project ......"
-  sudo locklift init --path ${VENOM_HOME}/$WORK_SPACE/${PROJECT_NAME_INSTRUMENT}
+  sudo locklift init --path $WORK_SPACE/${PROJECT_NAME_INSTRUMENT}
 fi
 
 echo "SUMMARY________________________________"
@@ -103,8 +125,9 @@ echo " yarn -v ..................: $(yarn -v)"
 echo " npm -v  ..................: $(npm -v) "
 echo " docker --version .........: $(docker --version )"
 echo " cmake --version ..........: $(cmake --version | tr '\n' ' ')"
-echo " TON-Solidity-Compiler.....: $(solc -v)"
-echo " cargo --versoin...........: $(cargo --version)"
+echo " TON-Solidity-Compiler.....: $(solc -v | tr '\n' ' ')"
+echo " docker tonlab/local-node..: $version_tonlabas_local_node"
+echo " cargo --version...........: $(cargo --version)"
 echo " locklift --version........: $(locklift --version)"
 echo " PAHT TO PROJECT...........: cd ${VENOM_HOME}/$WORK_SPACE/${PROJECT_NAME_INSTRUMENT}"
 echo " Tree project..............: tree --gitignore ${VENOM_HOME}/$WORK_SPACE/${PROJECT_NAME_INSTRUMENT}"
@@ -112,5 +135,8 @@ echo "_______________________________________"
 echo " "
 
 sync
-cd -
-su venom
+if [[ $(whoami) == "venom" ]]; then 
+  sudo venom cd --
+else
+  sudo su venom
+fi
