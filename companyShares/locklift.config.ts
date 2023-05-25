@@ -8,9 +8,9 @@ declare global {
 const LOCAL_NETWORK_ENDPOINT = process.env.NETWORK_ENDPOINT || "http://localhost/graphql";
 const DEV_NET_NETWORK_ENDPOINT = process.env.DEV_NET_NETWORK_ENDPOINT || "https://devnet-sandbox.evercloud.dev/graphql";
 
-const VENOM_TESTNET_ENDPOINT = process.env.VENOM_TESTNET_ENDPOINT || "https://jrpc-testnet.venom.foundation/rpc";
+const VENOM_TESTNET_ENDPOINT = process.env.VENOM_TESTNET_ENDPOINT || "https://jrpc-devnet.venom.foundation/";
 const VENOM_TESTNET_TRACE_ENDPOINT =
-  process.env.VENOM_TESTNET_TRACE_ENDPOINT || "https://gql-testnet.venom.foundation/graphql";
+  process.env.VENOM_TESTNET_TRACE_ENDPOINT || "https://gql-devnet.venom.network/graphql";
 
 // Create your own link on https://dashboard.evercloud.dev/
 const MAIN_NET_NETWORK_ENDPOINT = process.env.MAIN_NET_NETWORK_ENDPOINT || "https://mainnet.evercloud.dev/XXX/graphql";
@@ -19,9 +19,9 @@ const config: LockliftConfig = {
   compiler: {
     // Specify path to your TON-Solidity-Compiler
     // path: "/mnt/o/projects/broxus/TON-Solidity-Compiler/build/solc/solc",
-
+    path: process.env.NODEJS_COMPILER_PATH
     // Or specify version of compiler
-    version: "0.62.0",
+    //version: "0.62.0",
 
     // Specify config for extarnal contracts as in exapmple
     // externalContracts: {
@@ -31,11 +31,12 @@ const config: LockliftConfig = {
   linker: {
     // Specify path to your stdlib
     // lib: "/mnt/o/projects/broxus/TON-Solidity-Compiler/lib/stdlib_sol.tvm",
+    lib: process.env.TVM_LIB_PATH, 
     // // Specify path to your Linker
     // path: "/mnt/o/projects/broxus/TVM-linker/target/release/tvm_linker",
-
+    path: process.env.TVM_LINKER_PATH
     // Or specify version of linker
-    version: "0.15.48",
+    //version: "0.20.2"
   },
   networks: {
     local: {

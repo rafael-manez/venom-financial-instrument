@@ -102,12 +102,12 @@
     CONTEXT_ENVIRONMENT="local"; 
     ./scripts/002_test_venom_instrument.sh "$WORK_SPACE" "$PROJECT_NAME_INSTRUMENT" "$CONFIG_FILE_ENVIRONMENT" "$CONTEXT_ENVIRONMENT"
 ```
-# CREATE FINANCIAL RULES
+# Create financial rules
 ```
   usage: ./003_createFinancialRules.sh "$financial_instrument" "[$ISOsupra->,]$jurisdiction[,->$ISOinfra]" "$NAME_RULE" "$LEGAL_DESCRIPTION" "$noCompatilbleJurisdiction"[,"$noCompatibleJurisdiction1,,,,"] [$TYPE_RULE] [$addChildNodeToRule]
 ```
 
-# PRE FORMAT RULES TO BURN CONTRACTS
+# Pre format rules to burn contracts
 ```
   usage: ./004_financialRulesToGas.sh  "$financial_instrument" "$fromJurisdiction"[,"fromJurisdiction1,..."], ["$toJurisdiction"] "$interfacePreParameter"
 
