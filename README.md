@@ -113,7 +113,7 @@
 
   #Intervinients financialInstrument, fromJurisdiction, toJurisdiction -> metadata
   #Load metadata rules for financial instruments between intervinients -> binary
-  #sendPreParameter binary to [Web3, HeadLess, RCP] -> burn contract
+  #sendPreParameter binary to [Web3, HeadLess, RPC] -> burn contract
   #Result of action.
 ```
 
