@@ -85,7 +85,53 @@
 ```
 # Test Instruments
 ```
-  Usage: ./002_test_venom_instrument.sh "$WORK_SPACE" "PROJECT_NAME_INSTRUMENT" "$CONFIG_FILE_ENVIRONMENT"
+  Usage: ./002_test_venom_instrument.sh "$WORK_SPACE" "$PROJECT_NAME_INSTRUMENT" "$CONFIG_FILE_ENVIRONMENT" "[$CONTEXT_ENVIRONMENT]"
+  Brief: Test instrument by locklift at defaul wokspace /venom-financial-instruments with config file for dev at .env and default context to launch docker/local-hode of [local|testnet|mainnet]
+   1.# chmod a+x 002_test_venom_instrument.sh
+   2.# eval $(ssh-agent -s); ssh-add ~/.ssh/venom_rsa; ssh -T git@github.com	#Active git agent to interact with live user
+   3.# WORK_SPACE="/mnt/usb/venon/venom-financial-instruments	#work space should have the word venom-financial-instruments
+   4.# PROJECT_NAME_INSTRUMENT="companyShares"
+   5.# CONFIG_FILE_ENVIRONMENT=".env"	#If not exists create with "·ouch .nv"
+   6.# CONTEXT_ENVIRONMENT="local"	#Optional Context to launch [local | testnet | mainnet]  Default local launch docker/local-node
+   7.# ./002_test_venom_instrument.sh "$WORK_SPACE" "$PROJECT_NAME_INSTRUMENT" "$CONFIG_FILE_ENVIRONMENT" "$CONFIG_FILE_ENVIRONMENT"
+
+  Example:
+    WORK_SPACE="/home/venom/venom-financial-instruments/"; 
+    PROJECT_NAME_INSTRUMENT="companyShares"; 
+    CONFIG_FILE_ENVIRONMENT=".env"; 
+    CONTEXT_ENVIRONMENT="local"; 
+    ./scripts/002_test_venom_instrument.sh "$WORK_SPACE" "$PROJECT_NAME_INSTRUMENT" "$CONFIG_FILE_ENVIRONMENT" "$CONTEXT_ENVIRONMENT"
+```
+# CREATE FINANCIAL RULES
+```
+  usage: ./003_createFinancialRules.sh "$financial_instrument" "[$ISOsupra->,]$jurisdiction[,->$ISOinfra]" "$NAME_RULE" "$LEGAL_DESCRIPTION" "$noCompatilbleJurisdiction"[,"$noCompatibleJurisdiction1,,,,"] [$TYPE_RULE] [$addChildNodeToRule]
+```
+
+# PRE FORMAT RULES TO BURN CONTRACTS
+```
+  usage: ./004_financialRulesToGas.sh  "$financial_instrument" "$fromJurisdiction"[,"fromJurisdiction1,..."], ["$toJurisdiction"] "$interfacePreParameter"
+
+  #Intervinients financialInstrument, fromJurisdiction, toJurisdiction -> metadata
+  #Load metadata rules for financial instruments between intervinients -> binary
+  #sendPreParameter binary to [Web3, HeadLess, RCP] -> burn contract
+  #Result of action.
+```
+
+# Summary stable versions:
+```
+ node -v ..................: v19.9.0
+ yarn -v ..................: 1.22.19
+ npm -v  ..................: 9.6.3 
+ docker --version .........: Docker version 23.0.4, build f480fb1
+ cmake --version ..........: cmake version 3.24.2  CMake suite maintained and supported by Kitware (kitware.com/cmake). 
+ config file .env..........: /home/venom/venom-financial-instruments//companyShares/.env
+ TON-Solidity-Compiler.....: solc, the solidity compiler commandline interface Version: 0.68.0+commit.0585d525.mod.Linux.g++ 
+ tvm_linker -V.............: v0.20.2
+ docker tonlabs/local-node.: tonlabs/local-node:0.29.1
+ cargo --version...........: cargo 1.65.0
+ locklift --version........: 2.5.5
+ PATH TO PROJECT...........: cd /home/venom/venom-financial-instruments//companyShares
+ Tree project..............: tree --gitignore /home/venom/venom-financial-instruments//companyShares
 ```
 
 # Requeriments:
@@ -105,4 +151,5 @@
  
 # Contribute
  Contributions are always welcome!
+
 
