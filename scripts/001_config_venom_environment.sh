@@ -13,7 +13,7 @@ function usage()
 {
   echo ''
   echo 'Usage: ./001_config_venom_environment.sh "$WORK_SPACE" "PROJECT_NAME_INSTRUMENT"'
-  echo "Brief: install and config doker, node, yarn, npm, locklift and wokspace at default $WORK_SPACE/$PROJECT_NAME"
+  echo "Brief: install and config docker, node, yarn, npm, locklift and wokspace at default $WORK_SPACE/$PROJECT_NAME"
   echo ' 1.# chmod a+x 001_config_venom_environment.sh'
   echo ' 2.# WORK_SPACE="/mnt/usb/venon/venom-financial-instruments' #work space should have the word venom-financial-instruments
   echo ' 3.# PROJECT_NAME_INSTRUMENT="companyShares"'
@@ -86,7 +86,8 @@ if ! [[ $(yarn -v) =~ '1.22.'.* ]]; then
 fi
 
 #Install TON-solidity-Compiler
-if ! [[ $( solc -v) =~ .*'0.68.'.* ]]; then 
+if [ ! -n $(which tvm_linker) ] || ! [[ $( solc -v) =~ .*'0.68.'.* ]]; then
+  echo "Install or Updating TON-solidity-Compiler"	
   git clone https://github.com/tonlabs/TON-Solidity-Compiler ${VENOM_HOME}/TON-Solidity-Compiler
   sh ${VENOM_HOME}/TON-Solidity-Compiler/compiler/scripts/./install_deps.sh
   mkdir ${VENOM_HOME}/TON-Solidity-Compiler/build
@@ -95,28 +96,47 @@ if ! [[ $( solc -v) =~ .*'0.68.'.* ]]; then
   cmake --build . --target install --config Debug -j$(nproc)
   #cmake --install . --config Debug
   sudo -u venom sh ${VENOM_HOME}/TON-Solidity-Compiler/compiler/scripts/install_lib_variable.sh #Envar venom Environment
+  cd --
+fi
+
+#Install LINKER
+tvm_linker_version=$(tvm_linker -V | grep -E 'v[.0-9]+')
+if [ ! -n $(which tvm_linker) ] || ! [[ $( tvm_linker -V) =~ .*'0.20.'.* ]]; then 
+  echo "Install or Updating TMV_LINKER"
+  git clone https://github.com/tonlabs/TVM-linker.git ${VENOM_HOME}/TVM-linker
+  cd ${VENOM_HOME}/TVM-linker
+  echo "NOTICE: Please be patient with the download and update process. If,it takes more than 5 minutes, restart the script until reaches a fast index node"
+  cargo update && cargo build --release -j$(nproc)
+  echo "Add linker to PATH permanently at ${VENOM_HOME}/.bashrc and create tvm_linker alias"
+  echo "export TVM_LINKER_PATH=${VENOM_HOME}/TVM-linker/target/release/tvm_linker" >> ${VENOM_HOME}/.bashrc
+  echo "alias tvm_linker=$TVM_LINKER_PATH" >> ${VENOM_HOME}/.bashrc #is a script set as alias
+  alias tvm_linker=$TVM_LINKER_PATH
+  source ~/.bashrc #refres environment
+  tvm_linker_version=$( ${VENOM_HOME}/TVM-linker/target/release/./tvm_linker -V | grep -E 'v[.0-9]+')
+  echo "TVM LINKER New Version: $tvm_linker_version"
+  cd --
 fi
 
 #Dowload tonlabs local docker environemnt
 tonlabs_local_node=$(sudo docker ps | grep tonlabs/local-node)
 if [[ -n $tonlabs_local_node ]]; then 
   echo "Tonlabs docker local-node"
-  sudo docker ps | grep tonlabs/local-node
+  docker ps | grep tonlabs/local-node
 else	
-  sudo docker run -d -e USER_AGREEMENT=yes --rm --name local-node -p80:80 tonlabs/local-node:0.20.1
+  docker run -d -e USER_AGREEMENT=yes --rm --name local-node -p80:80 tonlabs/local-node:0.29.1
   echo $tonlabs_local_node 
 fi
-version_tonlabas_local_node=$(sudo docker ps | grep -Eo "tonlabs/local-node:[.0-9]+")
+version_tonlabs_local_node=$(sudo docker ps | grep -Eo "tonlabs/local-node:[.0-9]+")
 
 #Check npm locklift package
 if ! [[ $( npm list -g | grep locklift ) =~ .*'2.5.5'.* ]]; then 
-  sudo npm install -g locklift
+  npm install -g locklift
 fi
 
 #Setting up the venom smart contract development environment
 if ! [ -d  "$workSpace/${PROJECT_NAME_INSTRUMENT}" ]; then 
   echo "Initial project ......"
-  sudo locklift init --path $WORK_SPACE/${PROJECT_NAME_INSTRUMENT}
+  locklift init --path $WORK_SPACE/${PROJECT_NAME_INSTRUMENT}
 fi
 
 echo "SUMMARY________________________________"
@@ -126,17 +146,18 @@ echo " npm -v  ..................: $(npm -v) "
 echo " docker --version .........: $(docker --version )"
 echo " cmake --version ..........: $(cmake --version | tr '\n' ' ')"
 echo " TON-Solidity-Compiler.....: $(solc -v | tr '\n' ' ')"
-echo " docker tonlab/local-node..: $version_tonlabas_local_node"
+echo " tvm_linker -V.............: $tvm_linker_version"
+echo " docker tonlabs/local-node.: $version_tonlabs_local_node"
 echo " cargo --version...........: $(cargo --version)"
 echo " locklift --version........: $(locklift --version)"
-echo " PAHT TO PROJECT...........: cd ${VENOM_HOME}/$WORK_SPACE/${PROJECT_NAME_INSTRUMENT}"
+echo " PATH TO PROJECT...........: cd ${VENOM_HOME}/$WORK_SPACE/${PROJECT_NAME_INSTRUMENT}"
 echo " Tree project..............: tree --gitignore ${VENOM_HOME}/$WORK_SPACE/${PROJECT_NAME_INSTRUMENT}"
 echo "_______________________________________"
 echo " "
 
 sync
 if [[ $(whoami) == "venom" ]]; then 
-  sudo venom cd --
+  cd --
 else
   sudo su venom
 fi
