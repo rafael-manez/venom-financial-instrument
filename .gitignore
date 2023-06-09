@@ -6,3 +6,4 @@ get-docker.sh
 .env
 id_rsa
 id_rsa.pub
+bin/openapitools/
