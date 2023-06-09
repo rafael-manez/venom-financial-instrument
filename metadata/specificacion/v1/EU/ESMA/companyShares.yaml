@@ -1,0 +1,309 @@
+openapi: "3.1.0"
+info:
+  title: "4100 - Prices and volumes ticks data (BMEX)"
+  description: > 
+    Equities Information on the equities listed in BME including:
+      * Continuous Market, 
+      * Latibex, 
+      * MAB (Growth companies) and Open Outcry Markets, including electronic floor).
+      * Messages included in the files are as follows.
+        <dl>
+          <dt> A_SM </dt>  <dd> Status </dd>
+          <dt> A </dt>  <dd> Trades and Status </dd> 
+          <dt> AE </dt>  <dd> Special and Block Transactions </dd> 
+          <dt> fSY </dt>  <dd> Security Status </dd>
+          <dt> H  </dt>  <dd> Cancellations </dd>
+          <dt> M2 </dt>  <dd> Quotes from 6th to 10th </dd> 
+          <dt> M3 </dt>  <dd> Quotes from 11th to 15th </dd>
+          <dt> M4 </dt>  <dd> Quotes from 16th to 20th </dd>
+          <dt> MC </dt>  <dd> Market Status </dd>
+          <dt> MO </dt>  <dd> Order Market </dd>
+          <dt> MP </dt>  <dd> Quotes from 1st to 5th </dd> 
+          <dt> P  </dt>  <dd> Previous, open and close status </dd> 
+          <dt> SM </dt>  <dd> BBO (Best bid offer) </dd>
+          <dt> SY </dt>  <dd> Security List (Master Data) </dd> 
+          <dt> TX </dt>  <dd> News </dd>
+        </dl>
+  contact:
+    name: "BME Market Data"
+    url: "https://www.bmemarketdata.es"
+    email: "marketdata@grupobme.es"
+  license: 
+    name: "MIT License"
+    identifier: "MIT License"
+    url: "https://opensource.org/locense/mit"
+  version: "1.20 06/04/2018 11:36:00"
+servers: 
+  - url: "{protocol}://{username}.marketdatasimulator.com:{port}/{basePath}"
+    description: "The concept environment API server"
+    variables:
+      protocol:
+        enum:
+          - http
+          - https
+          - ws
+          - wss
+        default: https
+      environment:
+        enum:
+          - api #prod
+          - api.dev
+          - local-node #chain node local
+          - testnet #chain node testnet
+          - mainnet #chain node prod
+        default: testnet
+      username:
+        # note! no enum here means it is an open value
+        default: "open"
+        description: "This value is assigned."
+      port:
+        enum:
+          - '8443'
+          - '443'
+        default: '8443'
+      basePath:
+        # open meaning there is the opportunity to use special base paths as assigned by the provider, default is `v1`
+        default: 'api/v1'
+paths:
+  /MIC/STOCK_EXCHANGE/{product_id}/{service_id}/{information_type_id}/{file_type}/{asset_type_id}:
+    get:
+      tags:
+        - "EQUITIES A_SM"
+      summary: "Equities | A_SM -> Status"
+      description: "Information on the equities listed in BME including Continuous Market, Latibex, MAB (Growth companies) and Open Outcry Markets,including electronic floor). Messages included in the files are as follows. [A_SM=Status; A=Trades and Status; AE=Special and Block Transactions; fSY=Security Status; H=Cancellations; M2=Quotes from 6th to 10th; M3=Quotes from 11th to 15th; M4=Quotes from 16th to 20th; MC=Market Status; MO=Order Market; MP=quotes from 1st to 5th; P=Previous, open and close status; SM= BBO (Best bid offer); SY=Security List (Master Data) TX=News]"      
+      operationId: "getEquitiesStatus"
+      parameters: 
+        - $ref: "#/components/parameters/product_id"
+        - $ref: "#/components/parameters/service_id"
+        - $ref: "#/components/parameters/information_type_id"
+        - $ref: "#/components/parameters/file_type"
+        - $ref: "#/components/parameters/asset_type_id"
+        - $ref: "#/components/parameters/date"
+        - $ref: "#/components/parameters/from"
+        - $ref: "#/components/parameters/to"
+        - $ref: "#/components/parameters/limit"
+      responses:
+        "200":
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/Equity"
+                  - $ref: "#/components/schemas/Equities"
+                  - $ref: "#/components/schemas/InternalError"
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/components/responses/404"
+                
+components:
+  securitySchemes:
+    bearerAuth:       
+      type: http
+      scheme: bearer
+  parameters:
+    date:
+      name: "date"
+      in: "path"
+      description: "Trading day in the format  YYYYMMDD"
+      example: "20200106"
+      required: true
+      schema:
+        type: "string"
+    from:
+      name: "from"
+      in: "query"
+      description: >
+        Timestamp of when the order book was valid or starting time of the time interval.<br/>
+        Format: Nanoseconds since 1970 (EOBI TransactTime)
+      example: "1589175000156121100"
+      required: true
+      schema:
+        type: string
+    limit:
+      name: "limit"
+      in: "query"
+      description: "Max number of elements in the response. (Maximum = 10000)"
+      required: false
+      schema:
+        type: integer
+        default: 10000
+    product_id:
+      name: "productid"
+      in: "path"
+      description: "BME product identifier or product pool"
+      example: "SIB N1+"
+      required: true
+      schema:
+        type: "string"
+    service_id:
+      name: "serviceid"
+      in: "path"
+      description: "Conexion BME gate server"
+      example: "equities"
+      required: true
+      schema:
+        type: "string"
+    to:
+      name: "to"
+      in: "query"
+      description: >
+        Ending time of the time interval.<br/>
+        Format: Nanoseconds since 1970 (EOBI TransactTime) 
+      example: "1589175000156121100"
+      required: false
+      schema:
+        type: string
+    information_type_id:
+      name: "informationtypeid"
+      in: "path"
+      description: "Product type. [RV, ETF, MERF, MARF, SEND, WAR]"
+      example: "RV"
+      required: true
+      schema:
+        type: string
+    file_type:
+      name: "filetype"
+      in: "path"
+      description: "file type. [ A_SM, fSY, MC, P, SY, TX, TF ]"
+      example: "RV"
+      required: true
+      schema:
+        type: string
+    asset_type_id:
+      name: "assettypeid"
+      in: "path"
+      description: "file type. [ A_SM, fSY, MC, P, SY, TX, TF ]"
+      example: "RV"
+      required: true
+      schema:
+        type: string
+  schemas:
+    InternalError:
+      properties:
+        success:
+          type: string
+          example: "false"
+        message:
+          type: string
+          example: "Error message"
+      required:
+        - success
+        - message
+    Equity:
+      type: object
+      properties:
+        Fecha:
+          description: "Date YYYYMMDD"
+          type: string
+          pattern: /([0-9]{4})(?:[0-9]{2})([0-9]{2})/
+          example: "20190517"
+        Secuencia:
+          description: "Secuence number" 
+          maxLength: 15
+          minLength: 9
+          type: string
+        Valor:
+          description: "SecurityID"
+          type: string
+          maxLength: 8
+          example: "REP"
+        Modal_contr:
+          title: "ModalContr"
+          type: object
+          description: "CONTRACT MODALITY [ 100 = Continuous market; 101 = Fixing; 102 = Block Market; 103 = Special transactions; 104 = NAV ]"
+          properties: 
+            id:
+              type: string
+              maxLength: 3
+            description: 
+              type: string
+          required:
+             - id
+          example: 
+            id: 100
+            description: "Continuous market"
+        Origen:
+          title: "Origen" 
+          type: object
+          description: "Origin [ EQ = Equity TF = ETF CW = Warrants MA = MAB LT = Latibex ]"
+          properties: 
+            id:
+              type: string
+              maxLength: 2
+            description: 
+              type: string
+          required:
+             - id
+          example: 
+            id: "EQ"
+            description: "Equity"
+        Precio:
+            type: number
+            description: "Last price of the trading session (until that moment)"
+            minimum: 0.0
+            maximum: 999999999999.999999
+            example: 17.2850
+        Precio_medio:
+            type: number
+            description: "Average price in the day"
+            minimum: 0.0
+            maximum: 999999999999.999999
+            example: 6.2821
+        Precio_alto:
+            type: number
+            description: "High price in the day"
+            minimum: 0.0
+            maximum: 999999999999.999999
+            example: 9.7220
+        Precio_bajo: 
+            type: number
+            description: "Low price in the day"
+            minimum: 0.0
+            maximum: 999999999999.999999
+            example: 16.9400
+        Volumen_acum:
+            type: integer
+            description: "Accumulated volume in the day"
+            minimum: 0
+            maximum: 99999999999
+            example: 13014404
+        Efectivo_acum:
+            type: number
+            description: "Accumulated traded turnover"
+            minimum: 0.0
+            maximum: 999999999999.999999
+            example: 1074223.57
+        Proc_oper:
+            type: object
+            description: "Proc oper [ 1 (open market operation), 2 (opening auction operation), 3 (closing auction operation), 4 (volatility auction operation), 5 (manual auction operation), 6 (extended opening auction operation), 7 (extended closing auction operation), 8 (closing Price trading period operation) ] If it’s a retrocession operation, this field would always be “1” Blank if it’s for example a special operation."
+            example: 1
+        Hora: 
+            type: integer
+            description: time
+            example: 
+            format: "HHMMSSXXX or HHMMSS" 
+      required:
+        - Valor
+        - Origen
+        
+    Equities:
+      type: array
+      items:
+        $ref: "#/components/schemas/Equity"
+        
+  responses:
+    401:
+      description: Authorization failed
+      content:
+        text/plain:
+          schema:
+            type: string   
+          example:
+            "Origin authentication failed."
+    404:
+      description: Not found
+   
+security:
+  - bearerAuth: []
