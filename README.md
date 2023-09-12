@@ -1,6 +1,8 @@
 # venom-financial-instruments
  Venom for international regulated financial instruments -company shares, bonds, derivates, contracts...-
 
+ - Collaborator ! [Contact at Venom Foundation forum](https://forum.venom.foundation/t/venom-for-international-regulated-financial-instruments-fintech-and-developers/168)
+
  - Read VEP (Venom Enhance Proposals) file [VEP.md](VEP.md)
 
 # Features:
@@ -92,7 +94,7 @@
    2.# eval $(ssh-agent -s); ssh-add ~/.ssh/venom_rsa; ssh -T git@github.com	#Active git agent to interact with live user
    3.# WORK_SPACE="/mnt/usb/venon/venom-financial-instruments	#work space should have the word venom-financial-instruments
    4.# PROJECT_NAME_INSTRUMENT="companyShares"
-   5.# CONFIG_FILE_ENVIRONMENT=".env"	#If not exists create with "·ouch .nv"
+   5.# CONFIG_FILE_ENVIRONMENT=".env"	#If not exists create with "ï¿½ouch .nv"
    6.# CONTEXT_ENVIRONMENT="local"	#Optional Context to launch [local | testnet | mainnet]  Default local launch docker/local-node
    7.# ./002_test_venom_instrument.sh "$WORK_SPACE" "$PROJECT_NAME_INSTRUMENT" "$CONFIG_FILE_ENVIRONMENT" "$CONFIG_FILE_ENVIRONMENT"
 
