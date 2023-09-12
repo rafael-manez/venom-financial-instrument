@@ -6,6 +6,7 @@ VEP-001: VENOM FINANCIAL INSTRUMENTS
  type: Standards Track
  category: Contract
  created: 2023-04-03
+ git updated: 2023-06-09
 
 Abstract
 
